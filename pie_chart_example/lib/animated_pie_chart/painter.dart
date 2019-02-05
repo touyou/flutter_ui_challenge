@@ -1,8 +1,8 @@
 import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/pie_chart.dart';
-import 'package:pie_chart_example/stack.dart';
+import 'package:pie_chart_example/animated_pie_chart/pie_chart.dart';
+import 'package:pie_chart_example/animated_pie_chart/stack.dart';
 
 class AnimatedPieChartPainter extends CustomPainter {
   AnimatedPieChartPainter(this.animation) : super(repaint: animation);

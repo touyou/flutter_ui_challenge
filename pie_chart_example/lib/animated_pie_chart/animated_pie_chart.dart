@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/pie_chart.dart';
-import 'package:pie_chart_example/entry.dart';
-import 'package:pie_chart_example/painter.dart';
+import 'package:pie_chart_example/animated_pie_chart/pie_chart.dart';
+import 'package:pie_chart_example/animated_pie_chart/entry.dart';
+import 'package:pie_chart_example/animated_pie_chart/painter.dart';
 
 const Duration _kDuration = const Duration(milliseconds: 300);
 const double _kStartAngle = -90.0;
