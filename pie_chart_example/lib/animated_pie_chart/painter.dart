@@ -57,4 +57,8 @@ void _paintChart(Canvas canvas, Size size, PieChart chart) {
       );
     }
   }
+
+  segmentPaint.color = Colors.white;
+  canvas.drawCircle(Offset(size.width / 2, size.height / 2),
+      size.width / 2 * 0.6, segmentPaint);
 }
