@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/animated_pie_chart/pie_chart.dart';
-import 'package:pie_chart_example/animated_pie_chart/entry.dart';
-import 'package:pie_chart_example/animated_pie_chart/painter.dart';
+import 'pie_chart.dart';
+import 'entry.dart';
+import 'painter.dart';
 
 const Duration _kDuration = const Duration(milliseconds: 300);
 const double _kStartAngle = -90.0;
@@ -15,6 +15,8 @@ class AnimatedPieChart extends StatefulWidget {
     @required this.size,
     @required this.initialPieData,
     @required this.centerText,
+    @required this.centerImage,
+    @required this.centerImageTag,
     this.duration = _kDuration,
     this.isPercentageValues = false,
     this.holeRadius,
@@ -31,6 +33,8 @@ class AnimatedPieChart extends StatefulWidget {
   final double startAngle;
   final String centerText;
   final TextStyle centerTextStyle;
+  final Widget centerImage;
+  final String centerImageTag;
 
   static AnimatedPieChartState of(BuildContext context, {bool nullOk: false}) {
     assert(context != null);
@@ -148,14 +152,7 @@ class AnimatedPieChartState extends State<AnimatedPieChart>
                 widget.centerText,
                 style: widget.centerTextStyle,
               )
-            : Hero(
-                tag: 'hello',
-                child: Icon(
-                  Icons.airport_shuttle,
-                  color: Colors.black45,
-                  size: 100.0,
-                ),
-              ),
+            : Hero(tag: widget.centerImageTag, child: widget.centerImage),
         GestureDetector(
           onTap: () {
             setState(() {
@@ -169,7 +166,6 @@ class AnimatedPieChartState extends State<AnimatedPieChart>
             height: widget.size.height,
             decoration: BoxDecoration(
               color: Colors.transparent,
-              // borderRadius: BorderRadius.circular(widget.size.width / 2),
               shape: BoxShape.circle,
             ),
             child: Text(''),

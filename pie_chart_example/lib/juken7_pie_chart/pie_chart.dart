@@ -1,9 +1,9 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/animated_pie_chart/entry.dart';
-import 'package:pie_chart_example/animated_pie_chart/stack.dart';
-import 'package:pie_chart_example/animated_pie_chart/tween.dart';
+import 'entry.dart';
+import 'stack.dart';
+import 'tween.dart';
 
 class PieChart {
   static const double _kStackWidthFraction = 0.75;

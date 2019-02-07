@@ -1,9 +1,9 @@
 import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/animated_pie_chart/entry.dart';
-import 'package:pie_chart_example/animated_pie_chart/segment.dart';
-import 'package:pie_chart_example/animated_pie_chart/tween.dart';
+import 'entry.dart';
+import 'segment.dart';
+import 'tween.dart';
 
 const double _kMaxAngle = 360.0;
 

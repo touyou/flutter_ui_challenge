@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:pie_chart_example/animated_pie_chart/tween.dart';
+import 'tween.dart';
 
 /// Segment
 class PieChartSegment extends MergeTweenable<PieChartSegment> {

@@ -4,9 +4,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'animated_pie_chart/animated_pie_chart.dart';
-import 'animated_pie_chart/pie_chart.dart';
-import 'animated_pie_chart/entry.dart';
+import 'juken7_pie_chart/juken7_pie_chart.dart';
 
 final GlobalKey<AnimatedPieChartState> _chartKey = new GlobalKey();
 
@@ -72,6 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontSize: 40.0,
                 fontWeight: FontWeight.bold,
               ),
+              centerImage: Icon(
+                Icons.airport_shuttle,
+                color: Colors.black45,
+                size: 100.0,
+              ),
+              centerImageTag: 'Hero',
             ),
             FlatButton(
               child: Text('Animation'),
