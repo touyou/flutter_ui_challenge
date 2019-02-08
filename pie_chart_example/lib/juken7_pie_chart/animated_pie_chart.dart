@@ -147,12 +147,6 @@ class AnimatedPieChartState extends State<AnimatedPieChart>
             _tween.animate(_animation),
           ),
         ),
-        isText
-            ? Text(
-                widget.centerText,
-                style: widget.centerTextStyle,
-              )
-            : Hero(tag: widget.centerImageTag, child: widget.centerImage),
         GestureDetector(
           onTap: () {
             setState(() {
@@ -162,13 +156,16 @@ class AnimatedPieChartState extends State<AnimatedPieChart>
           behavior: HitTestBehavior.translucent,
           child: Container(
             alignment: Alignment.center,
-            width: widget.size.width,
-            height: widget.size.height,
             decoration: BoxDecoration(
               color: Colors.transparent,
               shape: BoxShape.circle,
             ),
-            child: Text(''),
+            child: isText
+                ? Text(
+                    widget.centerText,
+                    style: widget.centerTextStyle,
+                  )
+                : Hero(tag: widget.centerImageTag, child: widget.centerImage),
           ),
         )
       ],
