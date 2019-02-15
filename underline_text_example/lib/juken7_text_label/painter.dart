@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 class UnderlineTextPainter extends CustomPainter {
-  UnderlineTextPainter(this.texts, this.textStyle, this.color) : super();
+  UnderlineTextPainter(
+      this.texts, this.textStyle, this.color, this.lineGap, this.context)
+      : super();
 
   final List<String> texts;
   final TextStyle textStyle;
   final Color color;
+  final BuildContext context;
+  final double lineGap;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -18,8 +22,8 @@ class UnderlineTextPainter extends CustomPainter {
 
     for (final origin in originList) {
       canvas.drawRect(
-          Rect.fromLTRB(0, origin.height - underlineHeight, origin.width,
-              underlineHeight),
+          Rect.fromLTRB(0, origin.height - underlineHeight, origin.width + 5,
+              origin.height),
           underlinePaint);
     }
   }
@@ -33,6 +37,8 @@ class UnderlineTextPainter extends CustomPainter {
     var _initialLinePainter = TextPainter();
     _initialLinePainter
       ..text = TextSpan(style: _textStyle, text: _texts[0])
+      ..textDirection = Directionality.of(context)
+      ..textScaleFactor = MediaQuery.of(context).textScaleFactor
       ..layout();
     var lineHeight = _initialLinePainter.height;
 
@@ -48,10 +54,12 @@ class UnderlineTextPainter extends CustomPainter {
       var _labelPainter = TextPainter();
       _labelPainter
         ..text = TextSpan(style: _textStyle, text: text)
+        ..textDirection = Directionality.of(context)
+        ..textScaleFactor = MediaQuery.of(context).textScaleFactor
         ..layout();
 
-      _labelPainter.paint(canvas, Offset(0, lineHeight + 5));
-      lineHeight += 5 + _labelPainter.height;
+      _labelPainter.paint(canvas, Offset(0, lineHeight + lineGap));
+      lineHeight += lineGap + _labelPainter.height;
       originList.add(TextSize(_labelPainter.width, lineHeight));
     }
 
