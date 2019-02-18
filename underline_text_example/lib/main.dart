@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'juken7_text_label/underline_text_label.dart';
+import 'juken7_text_label/juken7_text_label.dart';
 
 void main() => runApp(MyApp());
 
