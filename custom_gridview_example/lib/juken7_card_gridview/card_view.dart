@@ -23,13 +23,13 @@ class CardView extends StatefulWidget {
     @required this.cardData,
     @required this.lineColor,
     @required this.textStyle,
-    @required this.size,
+    // @required this.size,
   }) : super();
 
   final CardData cardData;
   final Color lineColor;
   final TextStyle textStyle;
-  final Size size;
+  // final Size size;
 
   @override
   CardViewState createState() => CardViewState();
@@ -38,6 +38,14 @@ class CardView extends StatefulWidget {
 class CardViewState extends State<CardView> {
   @override
   Widget build(BuildContext context) {
+    final Orientation orientation = MediaQuery.of(context).orientation;
+    double cardWidth;
+    if (orientation == Orientation.portrait) {
+      cardWidth = (MediaQuery.of(context).size.width - 24.0 * 3) / 2;
+    } else {
+      cardWidth = (MediaQuery.of(context).size.height - 24.0 * 4) / 3;
+    }
+
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -46,27 +54,43 @@ class CardViewState extends State<CardView> {
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         boxShadow: [
           BoxShadow(
-              color: Color.fromARGB(15, 0, 0, 0),
-              blurRadius: 4.0,
+              color: Color.fromARGB(10, 0, 0, 0),
+              blurRadius: 5.0,
               spreadRadius: 2.0),
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           AnimatedPieChart(
             // Sizeを決める
-            size: Size(widget.size.width - 32.0, widget.size.width - 32.0),
+            size: (orientation == Orientation.portrait
+                ? Size(cardWidth - 32.0, cardWidth - 32.0)
+                : Size(cardWidth + 32.0, cardWidth + 32.0)),
             initialPieData: widget.cardData.initialPieData,
             centerText: "習得率\n${widget.cardData.score}%",
             centerImage: widget.cardData.image,
             centerImageTag: widget.cardData.imageTag,
+            centerTextStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: (orientation == Orientation.portrait
+                    ? cardWidth * 0.1
+                    : cardWidth * 0.2)),
           ),
-          UnderlineTextLabel(
-            texts: [widget.cardData.cardTitle],
-            color: widget.lineColor,
-            textStyle: widget.textStyle,
-            size: Size(
-                widget.size.width - 32.0, (widget.size.width - 32.0) * 3 / 7),
+          Text(widget.cardData.cardTitle),
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              print('push start');
+            },
+            child: UnderlineTextLabel(
+              texts: ['スタート'],
+              color: widget.lineColor,
+              textStyle: widget.textStyle,
+              size: (orientation == Orientation.portrait
+                  ? Size(cardWidth - 88.0, (cardWidth - 32.0) * 0.3)
+                  : Size(cardWidth - 24.0, (cardWidth - 32.0) * 0.6)),
+            ),
           )
         ],
       ),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'juken7_card_gridview/juken7_card_gridview.dart';
+import 'juken7_text_label/juken7_text_label.dart';
+import 'juken7_pie_chart/juken7_pie_chart.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -37,8 +41,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final Orientation orientation = MediaQuery.of(context).orientation;
-
+    final Size windowSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -48,51 +51,31 @@ class _MyHomePageState extends State<MyHomePage> {
         right: true,
         top: false,
         bottom: false,
-        child: Container(
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverPadding(
-                padding: EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 16.0),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [Text('Title')],
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: EdgeInsets.all(32.0),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount:
-                        (orientation == Orientation.portrait ? 2 : 3),
-                    mainAxisSpacing: 24.0,
-                    crossAxisSpacing: 24.0,
-                    childAspectRatio: 0.7,
-                  ),
-                  delegate: SliverChildListDelegate(
-                    List.generate(100, (index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(15, 0, 0, 0),
-                                blurRadius: 4.0,
-                                spreadRadius: 2.0,
-                              )
-                            ]),
-                        child: Text('HELLO'),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ],
+        child: CardGridView(
+          titleWidget: UnderlineTextLabel(
+            texts: ['Hello', 'World'],
+            textStyle: TextStyle(fontSize: 30.0, color: Colors.black),
+            color: Color.fromARGB(100, 25, 200, 20),
+            size: Size(windowSize.width, 80),
           ),
+          lineColorList: List.generate(20, (index) {
+            return Color.fromARGB(20, 100, 20, 80);
+          }),
+          childDataList: List.generate(20, (index) {
+            return CardData(
+                cardTitle: "SDCard",
+                imageTag: "image",
+                score: 50.0,
+                image: Icon(Icons.sd_card),
+                initialPieData: [
+                  PieStackEntry([
+                    PieSegmentEntry(20.0, Colors.red[200]),
+                    PieSegmentEntry(50.0, Colors.blue[200]),
+                    PieSegmentEntry(30.0, Colors.yellow[200]),
+                    PieSegmentEntry(0.0, Colors.white),
+                  ])
+                ]);
+          }),
         ),
       ),
     );

@@ -43,7 +43,8 @@ class CardGridViewState extends State<CardGridView> {
                 crossAxisCount: (orientation == Orientation.portrait ? 2 : 3),
                 mainAxisSpacing: 24.0,
                 crossAxisSpacing: 24.0,
-                childAspectRatio: 0.7,
+                childAspectRatio:
+                    (orientation == Orientation.portrait ? 0.7 : 1.0),
               ),
               delegate: SliverChildListDelegate(
                   this._createChildList(widget.childDataList, cardWidth)),
@@ -60,7 +61,7 @@ class CardGridViewState extends State<CardGridView> {
         cardData: cardDataList[index],
         lineColor: widget.lineColorList[index],
         textStyle: TextStyle(fontSize: 20.0, color: Colors.black),
-        size: Size(cardWidth, cardWidth / 0.7),
+        // size: Size(cardWidth, cardWidth / 0.7),
       );
     });
   }

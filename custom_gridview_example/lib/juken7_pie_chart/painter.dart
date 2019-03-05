@@ -15,7 +15,7 @@ class AnimatedPieChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(AnimatedPieChartPainter old) => false;
+  bool shouldRepaint(AnimatedPieChartPainter old) => true;
 }
 
 class PieChartPainter extends CustomPainter {

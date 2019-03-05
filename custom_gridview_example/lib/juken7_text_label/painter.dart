@@ -29,7 +29,7 @@ class UnderlineTextPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 
   List<TextSize> _textPaint(
       Canvas canvas, Size size, List<String> _texts, TextStyle _textStyle) {
