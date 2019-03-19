@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 lineColor: Color.fromARGB(60, 70, 10, 200),
                 title: '押してみよう！',
                 onTap: _incrementCounter,
-                textSize: Size(140, 35),
+                textSize: Size(110, 30),
               ),
             )
           ],
