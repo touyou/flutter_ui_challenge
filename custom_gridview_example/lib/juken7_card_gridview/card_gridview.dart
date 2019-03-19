@@ -61,6 +61,9 @@ class CardGridViewState extends State<CardGridView> {
         cardData: cardDataList[index],
         lineColor: widget.lineColorList[index],
         textStyle: TextStyle(fontSize: 20.0, color: Colors.black),
+        onTap: () {
+          print(index);
+        },
         // size: Size(cardWidth, cardWidth / 0.7),
       );
     });
