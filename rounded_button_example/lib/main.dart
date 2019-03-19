@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'juken7_rounded_button/juken7_rounded_button.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -92,19 +94,20 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: RoundedButton(
+                lineColor: Color.fromARGB(60, 70, 10, 200),
+                title: '押してみよう！',
+                onTap: _incrementCounter,
+                textSize: Size(140, 35),
+              ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
