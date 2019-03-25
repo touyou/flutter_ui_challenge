@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mathjax_view/mathjax_view.dart';
 
 class FoldableCardView extends StatefulWidget {
+  final Size widgetSize;
+
   FoldableCardView({
     @required this.widgetSize,
-  }) : super();
-
-  final Size widgetSize;
+  });
 
   @override
   FoldableCardViewState createState() => new FoldableCardViewState();
@@ -32,12 +32,12 @@ class FoldableCardViewState extends State<FoldableCardView> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: _generateView(),
+        children: _buildContents(),
       ),
     );
   }
 
-  List<Widget> _generateView() {
+  List<Widget> _buildContents() {
     List<Widget> viewList = [];
 
     switch (_foldableState) {
@@ -55,7 +55,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
             color: Color.fromARGB(255, 223, 223, 223),
           ),
           Text('解答時間: n分n秒'),
-          _createOperator(),
+          _buildOperator(),
         ];
         break;
       default:
@@ -63,18 +63,82 @@ class FoldableCardViewState extends State<FoldableCardView> {
           MathjaxView(
             onMathjaxViewCreated: (controller) {
               // TODO: set answer latex text
-              controller.setLatexText('answer tex');
+              controller.setLatexText('problem tex');
             },
             fontSize: 12,
           ),
         ];
+
+        switch (_foldableState) {
+          case FoldableState.hint1:
+            viewList.add(
+              Divider(
+                color: Color.fromARGB(255, 223, 223, 223),
+              ),
+            );
+            viewList.add(
+              MathjaxView(
+                onMathjaxViewCreated: (controller) {
+                  // TODO: set answer latex text
+                  controller.setLatexText('hint1 tex');
+                },
+                fontSize: 12,
+              ),
+            );
+            continue hint2;
+          hint2:
+          case FoldableState.hint2:
+            viewList.add(
+              Divider(
+                color: Color.fromARGB(255, 223, 223, 223),
+              ),
+            );
+            viewList.add(
+              MathjaxView(
+                onMathjaxViewCreated: (controller) {
+                  // TODO: set answer latex text
+                  controller.setLatexText('hint1 tex');
+                },
+                fontSize: 12,
+              ),
+            );
+            continue hint3;
+          hint3:
+          case FoldableState.hint3:
+            viewList.add(
+              Divider(
+                color: Color.fromARGB(255, 223, 223, 223),
+              ),
+            );
+            viewList.add(
+              MathjaxView(
+                onMathjaxViewCreated: (controller) {
+                  // TODO: set answer latex text
+                  controller.setLatexText('hint1 tex');
+                },
+                fontSize: 12,
+              ),
+            );
+            break;
+          default:
+            break;
+        }
+
+        viewList.add(
+          Divider(
+            color: Color.fromARGB(255, 223, 223, 223),
+          ),
+        );
+        // TODO: change text for each state
+        viewList.add(Text('解けたら解答を見てみよう！'));
+        viewList.add(_buildOperator());
         break;
     }
 
     return viewList;
   }
 
-  Widget _createOperator() {
+  Widget _buildOperator() {
     return SizedBox(
       width: widget.widgetSize.width / 3 - 16,
       height: 10,
