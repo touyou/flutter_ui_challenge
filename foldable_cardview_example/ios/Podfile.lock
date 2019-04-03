@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - mathjax_view (0.0.8):
+  - mathjax_view (0.0.10):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
-  mathjax_view: 4395f27f6912af16f34e09085bfc248ff0e58634
+  mathjax_view: 8f136b7c7659f953df8caece16c5f72cee612add
 
 PODFILE CHECKSUM: 19a4872182dd12630ce2dbcc7da2f3558002f28c
 

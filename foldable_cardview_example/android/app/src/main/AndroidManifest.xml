@@ -30,4 +30,5 @@
             </intent-filter>
         </activity>
     </application>
+    <application android:usesCleartextTraffic="true"></application>
 </manifest>

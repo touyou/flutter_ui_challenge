@@ -55,9 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        child: FoldableCardView(
-          widgetSize: size,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: FoldableCardView(
+            widgetSize: size,
+          ),
         ),
       ),
     );

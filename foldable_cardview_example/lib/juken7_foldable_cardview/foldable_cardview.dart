@@ -14,13 +14,13 @@ class FoldableCardView extends StatefulWidget {
 }
 
 class FoldableCardViewState extends State<FoldableCardView> {
-  FoldableState _foldableState = FoldableState.hint3;
+  FoldableState _foldableState = FoldableState.problem;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.widgetSize.width - 64,
-      height: widget.widgetSize.height - 160,
+      height: _cardSize(_foldableState),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -65,48 +65,60 @@ class FoldableCardViewState extends State<FoldableCardView> {
         ),
       ),
     );
-    Widget problem = SizedBox(
-      width: texWidth,
-      height: texHeight / 4,
-      child: MathjaxView(
-        onMathjaxViewCreated: (controller) {
-          // TODO: set answer latex text
-          controller.setLatexText('problem tex \$\\frac{x}{y}\$');
-        },
-        fontSize: 20,
+    Widget problem = Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: SizedBox(
+        width: texWidth,
+        height: texHeight / 4,
+        child: MathjaxView(
+          onMathjaxViewCreated: (controller) {
+            // TODO: set answer latex text
+            controller.setLatexText('problem tex \$\\frac{x}{y}\$');
+          },
+          fontSize: 20,
+        ),
       ),
     );
-    Widget hint1 = SizedBox(
-      width: texWidth,
-      height: texHeight / 4,
-      child: MathjaxView(
-        onMathjaxViewCreated: (controller) {
-          // TODO: set answer latex text
-          controller.setLatexText('hint1 tex \$\\frac{x}{y}\$');
-        },
-        fontSize: 16,
+    Widget hint1 = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SizedBox(
+        width: texWidth,
+        height: texHeight / 4,
+        child: MathjaxView(
+          onMathjaxViewCreated: (controller) {
+            // TODO: set answer latex text
+            controller.setLatexText('hint1 tex \$\\frac{x}{y}\$');
+          },
+          fontSize: 16,
+        ),
       ),
     );
-    Widget hint2 = SizedBox(
-      width: texWidth,
-      height: texHeight / 4,
-      child: MathjaxView(
-        onMathjaxViewCreated: (controller) {
-          // TODO: set answer latex text
-          controller.setLatexText('hint2 tex \$\\frac{x}{y}\$');
-        },
-        fontSize: 16,
+    Widget hint2 = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SizedBox(
+        width: texWidth,
+        height: texHeight / 4,
+        child: MathjaxView(
+          onMathjaxViewCreated: (controller) {
+            // TODO: set answer latex text
+            controller.setLatexText('hint2 tex \$\\frac{x}{y}\\\\hello\$');
+          },
+          fontSize: 16,
+        ),
       ),
     );
-    Widget hint3 = SizedBox(
-      width: texWidth,
-      height: texHeight / 4,
-      child: MathjaxView(
-        onMathjaxViewCreated: (controller) {
-          // TODO: set answer latex text
-          controller.setLatexText('hint3 tex ここは日本語');
-        },
-        fontSize: 16,
+    Widget hint3 = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SizedBox(
+        width: texWidth,
+        height: texHeight / 4,
+        child: MathjaxView(
+          onMathjaxViewCreated: (controller) {
+            // TODO: set answer latex text
+            controller.setLatexText('hint2 tex \$\\frac{x}{y}\\\\hello\$');
+          },
+          fontSize: 16,
+        ),
       ),
     );
 
@@ -152,6 +164,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         viewList = [
           answerLabel,
           answer,
+          Spacer(),
           divider,
           Text('解答時間: n分n秒'),
           _buildOperator(),
@@ -166,6 +179,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
               hint1Label,
               hint1,
               Spacer(),
+              divider,
+              Text('ヒント２を開く'),
             ];
             break;
           case FoldableState.hint2:
@@ -178,6 +193,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
               hint2Label,
               hint2,
               Spacer(),
+              divider,
+              Text('ヒント３を開く'),
             ];
             break;
           case FoldableState.hint3:
@@ -192,15 +209,21 @@ class FoldableCardViewState extends State<FoldableCardView> {
               divider,
               hint3Label,
               hint3,
+              Spacer(),
+              divider,
+              Text('解けたら解答を見てみよう！'),
             ];
             break;
           default:
+            viewList = [
+              problem,
+              Spacer(),
+              divider,
+              Text('ヒント１を開く'),
+            ];
             break;
         }
 
-        viewList.add(divider);
-        // TODO: change text for each state
-        viewList.add(Text('解けたら解答を見てみよう！'));
         viewList.add(_buildOperator());
         break;
     }
@@ -209,20 +232,69 @@ class FoldableCardViewState extends State<FoldableCardView> {
   }
 
   Widget _buildOperator() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: widget.widgetSize.width / 3 - 32,
-        height: 5,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 216, 216, 216),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _foldableState = _next(_foldableState);
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: widget.widgetSize.width / 3 - 32,
+          height: 5,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 216, 216, 216),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  FoldableState _next(FoldableState state) {
+    switch (state) {
+      case FoldableState.problem:
+        return FoldableState.hint1;
+        break;
+      case FoldableState.hint1:
+        return FoldableState.hint2;
+        break;
+      case FoldableState.hint2:
+        return FoldableState.hint3;
+        break;
+      case FoldableState.hint3:
+        return FoldableState.answer;
+        break;
+      case FoldableState.answer:
+        return FoldableState.problem;
+        break;
+    }
+  }
+
+  double _cardSize(FoldableState state) {
+    double texHeight = widget.widgetSize.height - 350;
+    switch (state) {
+      case FoldableState.problem:
+        return widget.widgetSize.height - 160 - texHeight / 4 * 3;
+        break;
+      case FoldableState.hint1:
+        return widget.widgetSize.height - 160 - texHeight / 4 * 2;
+        break;
+      case FoldableState.hint2:
+        return widget.widgetSize.height - 160 - texHeight / 4;
+        break;
+      case FoldableState.hint3:
+        return widget.widgetSize.height - 160;
+        break;
+      case FoldableState.answer:
+        return widget.widgetSize.height - 160;
+        break;
+      default:
+    }
   }
 }
 
