@@ -18,14 +18,17 @@ class FoldableStateListener extends ChangeNotifier {
         notifyListeners();
         break;
       case FoldableState.hint3:
+        state = FoldableState.answerBefore;
+        notifyListeners();
+        break;
+      case FoldableState.answerBefore:
         state = FoldableState.answer;
         notifyListeners();
         break;
-      case FoldableState.answer:
-        state = FoldableState.answer;
+      default:
         break;
     }
   }
 }
 
-enum FoldableState { problem, hint1, hint2, hint3, answer }
+enum FoldableState { problem, hint1, hint2, hint3, answer, answerBefore }

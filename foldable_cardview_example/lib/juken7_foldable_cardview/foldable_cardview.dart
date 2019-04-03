@@ -37,13 +37,13 @@ class FoldableCardViewState extends State<FoldableCardView> {
     super.initState();
 
     _foldableStateListener.addListener(() {
-      Future.delayed(Duration(milliseconds: 0), () {
-        problemController?.setLatexText(widget.problem.problem);
-        hint1Controller?.setLatexText(widget.problem.hint1);
-        hint2Controller?.setLatexText(widget.problem.hint2);
-        hint3Controller?.setLatexText(widget.problem.hint3);
-        answerController?.setLatexText(widget.problem.answer);
-      });
+      // Future.delayed(Duration(milliseconds: 10), () {
+      //   problemController?.setLatexText(widget.problem.problem);
+      //   hint1Controller?.setLatexText(widget.problem.hint1);
+      //   hint2Controller?.setLatexText(widget.problem.hint2);
+      //   hint3Controller?.setLatexText(widget.problem.hint3);
+      //   answerController?.setLatexText(widget.problem.answer);
+      // });
     });
   }
 
@@ -90,6 +90,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
             answerController = controller;
+            // print(answerController);
             answerController.setLatexText(widget.problem.answer);
           },
           fontSize: 16,
@@ -104,6 +105,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
             problemController = controller;
+            // print(problemController);
             problemController.setLatexText(widget.problem.problem);
           },
           fontSize: 20,
@@ -118,6 +120,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
             hint1Controller = controller;
+            // print(hint1Controller);
             hint1Controller.setLatexText(widget.problem.hint1);
           },
           fontSize: 16,
@@ -132,6 +135,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
             hint2Controller = controller;
+            // print(hint2Controller);
             hint2Controller.setLatexText(widget.problem.hint2);
           },
           fontSize: 16,
@@ -146,6 +150,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
             hint3Controller = controller;
+            // print(hint3Controller);
             hint3Controller.setLatexText(widget.problem.hint3);
           },
           fontSize: 16,
@@ -201,6 +206,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
           _buildOperator(),
         ];
         break;
+      case FoldableState.answerBefore:
+        return [];
       default:
         switch (_foldableStateListener.state) {
           case FoldableState.hint1:
@@ -267,6 +274,13 @@ class FoldableCardViewState extends State<FoldableCardView> {
       onTap: () {
         setState(() {
           _foldableStateListener.nextState();
+          Future.delayed(Duration(milliseconds: 10), () {
+            if (_foldableStateListener.state == FoldableState.answerBefore) {
+              setState(() {
+                _foldableStateListener.nextState();
+              });
+            }
+          });
         });
       },
       onPanStart: _foldableStateListener.state == FoldableState.answer
@@ -313,7 +327,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
       case FoldableState.answer:
         return widget.widgetSize.height - 160;
         break;
+      default:
+        return 0.0;
     }
-    return 0.0;
   }
 }
