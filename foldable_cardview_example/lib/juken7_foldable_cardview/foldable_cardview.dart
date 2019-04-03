@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:mathjax_view/mathjax_view.dart';
 import '../juken7_text_label/juken7_text_label.dart';
+import 'problem.dart';
+import 'foldable_state.dart';
 
 class FoldableCardView extends StatefulWidget {
   final Size widgetSize;
+  final GestureDragStartCallback onPanStart;
+  final GestureDragUpdateCallback onPanUpdate;
+  final GestureDragEndCallback onPanEnd;
+  final Problem problem;
 
   FoldableCardView({
     @required this.widgetSize,
+    @required this.onPanStart,
+    @required this.onPanUpdate,
+    @required this.onPanEnd,
+    @required this.problem,
   });
 
   @override
@@ -14,13 +24,34 @@ class FoldableCardView extends StatefulWidget {
 }
 
 class FoldableCardViewState extends State<FoldableCardView> {
-  FoldableState _foldableState = FoldableState.problem;
+  // FoldableState _foldableState = FoldableState.problem;
+  FoldableStateListener _foldableStateListener = FoldableStateListener();
+  MathjaxViewController answerController;
+  MathjaxViewController problemController;
+  MathjaxViewController hint1Controller;
+  MathjaxViewController hint2Controller;
+  MathjaxViewController hint3Controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _foldableStateListener.addListener(() {
+      Future.delayed(Duration(milliseconds: 0), () {
+        problemController?.setLatexText(widget.problem.problem);
+        hint1Controller?.setLatexText(widget.problem.hint1);
+        hint2Controller?.setLatexText(widget.problem.hint2);
+        hint3Controller?.setLatexText(widget.problem.hint3);
+        answerController?.setLatexText(widget.problem.answer);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: widget.widgetSize.width - 64,
-      height: _cardSize(_foldableState),
+      height: _cardSize(_foldableStateListener.state),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -58,8 +89,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         height: texHeight,
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
-            // TODO: set answer latex text
-            controller.setLatexText('answer tex \$x^2=y\$');
+            answerController = controller;
+            answerController.setLatexText(widget.problem.answer);
           },
           fontSize: 16,
         ),
@@ -72,8 +103,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         height: texHeight / 4,
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
-            // TODO: set answer latex text
-            controller.setLatexText('problem tex \$\\frac{x}{y}\$');
+            problemController = controller;
+            problemController.setLatexText(widget.problem.problem);
           },
           fontSize: 20,
         ),
@@ -86,8 +117,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         height: texHeight / 4,
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
-            // TODO: set answer latex text
-            controller.setLatexText('hint1 tex \$\\frac{x}{y}\$');
+            hint1Controller = controller;
+            hint1Controller.setLatexText(widget.problem.hint1);
           },
           fontSize: 16,
         ),
@@ -100,8 +131,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         height: texHeight / 4,
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
-            // TODO: set answer latex text
-            controller.setLatexText('hint2 tex \$\\frac{x}{y}\\\\hello\$');
+            hint2Controller = controller;
+            hint2Controller.setLatexText(widget.problem.hint2);
           },
           fontSize: 16,
         ),
@@ -114,8 +145,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         height: texHeight / 4,
         child: MathjaxView(
           onMathjaxViewCreated: (controller) {
-            // TODO: set answer latex text
-            controller.setLatexText('hint2 tex \$\\frac{x}{y}\\\\hello\$');
+            hint3Controller = controller;
+            hint3Controller.setLatexText(widget.problem.hint3);
           },
           fontSize: 16,
         ),
@@ -159,7 +190,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
       ),
     );
 
-    switch (_foldableState) {
+    switch (_foldableStateListener.state) {
       case FoldableState.answer:
         viewList = [
           answerLabel,
@@ -171,7 +202,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
         ];
         break;
       default:
-        switch (_foldableState) {
+        switch (_foldableStateListener.state) {
           case FoldableState.hint1:
             viewList = [
               problem,
@@ -235,9 +266,18 @@ class FoldableCardViewState extends State<FoldableCardView> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _foldableState = _next(_foldableState);
+          _foldableStateListener.nextState();
         });
       },
+      onPanStart: _foldableStateListener.state == FoldableState.answer
+          ? widget.onPanStart
+          : null,
+      onPanUpdate: _foldableStateListener.state == FoldableState.answer
+          ? widget.onPanUpdate
+          : null,
+      onPanEnd: _foldableStateListener.state == FoldableState.answer
+          ? widget.onPanEnd
+          : null,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
@@ -253,26 +293,6 @@ class FoldableCardViewState extends State<FoldableCardView> {
         ),
       ),
     );
-  }
-
-  FoldableState _next(FoldableState state) {
-    switch (state) {
-      case FoldableState.problem:
-        return FoldableState.hint1;
-        break;
-      case FoldableState.hint1:
-        return FoldableState.hint2;
-        break;
-      case FoldableState.hint2:
-        return FoldableState.hint3;
-        break;
-      case FoldableState.hint3:
-        return FoldableState.answer;
-        break;
-      case FoldableState.answer:
-        return FoldableState.problem;
-        break;
-    }
   }
 
   double _cardSize(FoldableState state) {
@@ -293,9 +313,7 @@ class FoldableCardViewState extends State<FoldableCardView> {
       case FoldableState.answer:
         return widget.widgetSize.height - 160;
         break;
-      default:
     }
+    return 0.0;
   }
 }
-
-enum FoldableState { problem, hint1, hint2, hint3, answer }

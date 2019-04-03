@@ -59,9 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.symmetric(vertical: 32),
         child: Align(
           alignment: Alignment.topCenter,
-          child: FoldableCardView(
-            widgetSize: size,
-          ),
+          child: SwipeActionCardView(),
         ),
       ),
     );
