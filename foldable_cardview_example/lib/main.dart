@@ -47,8 +47,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -59,7 +57,22 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.symmetric(vertical: 32),
         child: Align(
           alignment: Alignment.topCenter,
-          child: SwipeActionCardView(),
+          child: CardStack(
+            problemEngine: ProblemEngine(problems: [
+              Problem(
+                  problem: 'problem tex \$\\frac{x}{y}\\\\hello\$',
+                  hint1: 'hint1 tex \$\\frac{x}{y}\\\\hello\$',
+                  hint2: 'hint2 tex \$\\frac{x}{y}\\\\hello\$',
+                  hint3: 'hint3 tex \$\\frac{x}{y}\\\\hello\$',
+                  answer: 'answer tex \$\\frac{x}{y}\\\\hello\$'),
+              Problem(
+                  problem: 'problem2 tex \$\\frac{x^2}{y}=20\\\\hello\$',
+                  hint1: 'hint1 tex \$\\frac{x^2}{y}=20\\\\hello\$',
+                  hint2: 'hint2 tex \$\\frac{x^2}{y}=20\\\\hello\$',
+                  hint3: 'hint3 tex \$\\frac{x^2}{y}=20\\\\hello\$',
+                  answer: 'answer tex \$\\frac{x^2}{y}=20\\\\hello\$')
+            ]),
+          ),
         ),
       ),
     );

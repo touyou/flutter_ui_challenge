@@ -37,14 +37,24 @@ class FoldableCardViewState extends State<FoldableCardView> {
     super.initState();
 
     _foldableStateListener.addListener(() {
-      // Future.delayed(Duration(milliseconds: 10), () {
-      //   problemController?.setLatexText(widget.problem.problem);
-      //   hint1Controller?.setLatexText(widget.problem.hint1);
-      //   hint2Controller?.setLatexText(widget.problem.hint2);
-      //   hint3Controller?.setLatexText(widget.problem.hint3);
-      //   answerController?.setLatexText(widget.problem.answer);
-      // });
+      Future.delayed(Duration(milliseconds: 10), () {
+        if (_foldableStateListener.state == FoldableState.nextProblem ||
+            _foldableStateListener.state == FoldableState.answerBefore) {
+          setState(() {
+            _foldableStateListener.nextState();
+          });
+        }
+      });
     });
+  }
+
+  @override
+  void didUpdateWidget(FoldableCardView oldWidget) {
+    if (oldWidget.problem != widget.problem) {
+      _foldableStateListener.reset();
+    }
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -208,6 +218,8 @@ class FoldableCardViewState extends State<FoldableCardView> {
         break;
       case FoldableState.answerBefore:
         return [];
+      case FoldableState.nextProblem:
+        return [];
       default:
         switch (_foldableStateListener.state) {
           case FoldableState.hint1:
@@ -274,13 +286,6 @@ class FoldableCardViewState extends State<FoldableCardView> {
       onTap: () {
         setState(() {
           _foldableStateListener.nextState();
-          Future.delayed(Duration(milliseconds: 10), () {
-            if (_foldableStateListener.state == FoldableState.answerBefore) {
-              setState(() {
-                _foldableStateListener.nextState();
-              });
-            }
-          });
         });
       },
       onPanStart: _foldableStateListener.state == FoldableState.answer

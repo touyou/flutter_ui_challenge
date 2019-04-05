@@ -5,7 +5,16 @@ import 'foldable_cardview.dart';
 import 'problem.dart';
 
 class SwipeActionCardView extends StatefulWidget {
-  SwipeActionCardView({Key key}) : super(key: key);
+  final Problem problem;
+  final Function(double distance) onSlideUpdate;
+  final Function() onSlideOutComplete;
+
+  SwipeActionCardView({
+    Key key,
+    this.problem,
+    this.onSlideUpdate,
+    this.onSlideOutComplete,
+  }) : super(key: key);
 
   _SwipeActionCardViewState createState() => _SwipeActionCardViewState();
 }
@@ -33,6 +42,10 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
     setState(() {
       dragPosition = details.globalPosition;
       cardOffset = dragPosition - dragStart;
+
+      if (null != widget.onSlideUpdate) {
+        widget.onSlideUpdate(cardOffset.distance);
+      }
     });
   }
 
@@ -72,7 +85,7 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
     }
   }
 
-  void _slideLeft() {
+  void _slideLeft() async {
     final screenWidth = context.size.width;
     dragStart = _chooseRandomDragStart();
     slideOutTween = Tween(
@@ -80,7 +93,7 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
     slideOutAnimation.forward(from: 0.0);
   }
 
-  void _slideRight() {
+  void _slideRight() async {
     final screenWidth = context.size.width;
     dragStart = _chooseRandomDragStart();
     slideOutTween =
@@ -113,6 +126,10 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
                   const Offset(0.0, 0.0),
                   Curves.elasticOut.transform(slideBackAnimation.value),
                 );
+
+                if (null != widget.onSlideUpdate) {
+                  widget.onSlideUpdate(cardOffset.distance);
+                }
               },
             ),
       )
@@ -133,6 +150,10 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
       ..addListener(() {
         setState(() {
           cardOffset = slideOutTween.evaluate(slideOutAnimation);
+
+          if (null != widget.onSlideUpdate) {
+            widget.onSlideUpdate(cardOffset.distance);
+          }
         });
       })
       ..addStatusListener((AnimationStatus status) {
@@ -142,6 +163,10 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
             dragPosition = null;
             slideOutTween = null;
             cardOffset = const Offset(0.0, 0.0);
+
+            if (widget.onSlideOutComplete != null) {
+              widget.onSlideOutComplete();
+            }
           });
         }
       });
@@ -169,12 +194,7 @@ class _SwipeActionCardViewState extends State<SwipeActionCardView>
           onPanStart: _onPanStart,
           onPanUpdate: _onPanUpdate,
           onPanEnd: _onPanEnd,
-          problem: Problem(
-              problem: 'problem tex \$\\frac{x}{y}\\\\hello\$',
-              hint1: 'hint1 tex \$\\frac{x}{y}\\\\hello\$',
-              hint2: 'hint2 tex \$\\frac{x}{y}\\\\hello\$',
-              hint3: 'hint3 tex \$\\frac{x}{y}\\\\hello\$',
-              answer: 'answer tex \$\\frac{x}{y}\\\\hello\$'),
+          problem: widget.problem,
         ),
       ),
     );

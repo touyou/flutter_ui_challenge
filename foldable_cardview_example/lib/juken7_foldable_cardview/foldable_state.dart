@@ -25,10 +25,27 @@ class FoldableStateListener extends ChangeNotifier {
         state = FoldableState.answer;
         notifyListeners();
         break;
+      case FoldableState.nextProblem:
+        state = FoldableState.problem;
+        notifyListeners();
+        break;
       default:
         break;
     }
   }
+
+  void reset() {
+    state = FoldableState.nextProblem;
+    notifyListeners();
+  }
 }
 
-enum FoldableState { problem, hint1, hint2, hint3, answer, answerBefore }
+enum FoldableState {
+  nextProblem,
+  problem,
+  hint1,
+  hint2,
+  hint3,
+  answer,
+  answerBefore
+}
